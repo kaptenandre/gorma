@@ -11,7 +11,6 @@ Everything lives in `src/site.ts`. Links still marked `TBA` render as normal but
 | Where | Field |
 | --- | --- |
 | The Thicket pre-save (becomes "Listen" at release) | `single.link` |
-| Riche Fenix tickets | `live.tickets` |
 | Eat The Sky pre-order LP | `album.preorder` |
 | Eat The Sky pre-save | `album.presave` |
 | Spotify, Apple Music, Instagram, YouTube | `links` |

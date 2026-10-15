@@ -326,15 +326,6 @@ h3 {
   font-size: 1rem;
 }
 
-.gig-link {
-  margin-left: 0.3em;
-  border-bottom: 1px solid var(--fg);
-}
-
-.gig-link[href]:hover {
-  border-bottom-color: transparent;
-}
-
 .foot {
   margin-top: 26px;
 }
@@ -391,8 +382,12 @@ h3 {
   opacity: 1;
 }
 
+/* The light opens up, and the camera never stops creeping in. */
 .ready .hero-bg img {
-  animation: reveal 3.6s var(--ease) 0.15s both;
+  transform-origin: 50% 46%;
+  animation:
+    reveal 3.6s var(--ease) 0.15s both,
+    creep 45s linear both;
 }
 
 .ready .hero-logo {
@@ -414,13 +409,21 @@ h3 {
 @keyframes reveal {
   from {
     --r: 0%;
-    transform: scale(1.16);
     filter: brightness(0.3) contrast(1.4);
   }
   to {
     --r: 100%;
-    transform: none;
     filter: none;
+  }
+}
+
+/* A slow zoom on the graves for as long as you stay on the splash. */
+@keyframes creep {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.22);
   }
 }
 

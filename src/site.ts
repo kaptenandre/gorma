@@ -33,7 +33,6 @@ export const site = {
     dateLabel: "28 October",
     /** The row disappears from the page after this moment. */
     hideAfter: "2026-10-29T03:00:00.000Z",
-    tickets: TBA,
     map: "https://www.google.com/maps/search/?api=1&query=Riche+Fenix+G%C3%B6tgatan+40+Stockholm",
   },
 

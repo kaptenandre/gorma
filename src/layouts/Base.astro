@@ -29,7 +29,6 @@ const jsonLd = [
       address: { "@type": "PostalAddress", streetAddress: live.address, addressLocality: live.city, addressCountry: "SE" },
     },
     performer: { "@type": "MusicGroup", name: site.name },
-    ...(live.tickets && { offers: { "@type": "Offer", url: live.tickets } }),
   },
   {
     "@context": "https://schema.org",
