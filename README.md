@@ -26,12 +26,11 @@ Time-based behaviour, no rebuild needed:
 Taken from the LP sleeve (`GORMA_LP_V3.pdf`):
 
 - Type: Doomer TM (`public/fonts/DoomerTM.woff2`) for everything, Helvetica Bold for small meta (system Helvetica on Apple devices, Arial elsewhere).
-- Hero: the back cover photo, revealed like a torch beam opening on the graves, logo flickering in.
-- The Thicket: the gatefold photo and the chorus as printed inside it.
-- Eat The Sky: the front cover and the tracklist set like the back cover, A-side right aligned, B-side left aligned.
-- Footer: the back cover credits, column for column, with the Trust No One mark.
+- Splash: everything on one screen, footer included. The back cover photo, revealed like a torch beam opening on the graves, the logo flickering in, then The Thicket (pre-save), Eat The Sky (pre-order, pre-save), one quiet line for the gig, the links and the label line with the Trust No One mark.
+- Scroll on: the gatefold photo with The Thicket chorus as printed inside it, the front cover with the tracklist set like the back cover (A-side right aligned, B-side left aligned), then the back cover credits column for column.
 - The LP spine (Gorma, Eat The Sky, TNO053LP) runs down the right edge on desktop.
-- Heavy animated film grain over everything (`public/grain.png`, `.grain` in `src/styles/global.css`).
+- Contrast first: no grey text, photos pushed to deep black and bright white.
+- Grain at film speed over everything (`.grain` + `.dust` in `src/styles/global.css`): `public/grain.png` is blended with overlay so it eats into every tone while black stays black, `public/dust.png` adds sparse white specks so the black never goes dead.
 
 Image masters live in `src/assets/`; Astro resizes them to WebP at build time.
 

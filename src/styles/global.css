@@ -1,4 +1,4 @@
-/* Gorma. Black, white, Doomer, grain. Everything else comes from the LP artwork. */
+/* Gorma. Black, white, Doomer, grain. No greys: everything else comes from the LP artwork. */
 
 @font-face {
   font-family: "Doomer";
@@ -16,8 +16,6 @@
 :root {
   --fg: #fff;
   --bg: #000;
-  --muted: rgb(255 255 255 / 0.74);
-  --rule: rgb(255 255 255 / 0.2);
   --doomer: "Doomer", "Old English Text MT", serif;
   /* Helvetica Bold as on the sleeve; system Helvetica on Apple devices. */
   --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -82,35 +80,61 @@ h3 {
   color: var(--bg);
 }
 
+/* Small sleeve-style meta: Helvetica Bold, white. */
+.sans,
+.news-meta,
+.kicker,
+.legal {
+  font-family: var(--sans);
+  font-weight: 700;
+}
+
 /* ---------------------------------------------------------------- grain */
 
-.grain {
+/*
+ * Two layers at film speed. The grain is blended with overlay, so it eats into
+ * every tone of the photos and type while pure black stays black and pure
+ * white stays white: lots of grain, full contrast, no grey haze. The dust is a
+ * sparse layer of white specks so the black never goes dead.
+ */
+.grain,
+.dust {
   position: fixed;
   inset: -120px;
   z-index: 50;
   pointer-events: none;
-  background: url("/grain.png") 0 0 / 320px repeat;
-  opacity: 0.7;
-  animation: grain 0.9s steps(1) infinite;
+  animation: grain 0.4s steps(1) infinite;
 }
 
-/* Two device pixels per grain on retina: film, not digital noise. */
+.grain {
+  background: url("/grain.png") 0 0 / 256px repeat;
+  mix-blend-mode: overlay;
+}
+
+.dust {
+  background: url("/dust.png") 0 0 / 256px repeat;
+  animation-delay: -0.2s;
+}
+
+/* Smaller grain on retina: film, not digital noise. */
 @media (min-resolution: 2dppx) {
-  .grain {
-    background-size: 210px;
+  .grain,
+  .dust {
+    background-size: 170px;
   }
 }
 
 @keyframes grain {
   0% { transform: translate(0, 0); }
-  11% { transform: translate(-61px, 37px); }
-  22% { transform: translate(43px, -88px); }
-  33% { transform: translate(-97px, -21px); }
-  44% { transform: translate(78px, 64px); }
-  55% { transform: translate(-25px, 101px); }
-  66% { transform: translate(104px, -47px); }
-  77% { transform: translate(-83px, -96px); }
-  88% { transform: translate(17px, 72px); }
+  10% { transform: translate(-61px, 37px); }
+  20% { transform: translate(43px, -88px); }
+  30% { transform: translate(-97px, -21px); }
+  40% { transform: translate(78px, 64px); }
+  50% { transform: translate(-25px, 101px); }
+  60% { transform: translate(104px, -47px); }
+  70% { transform: translate(-83px, -96px); }
+  80% { transform: translate(17px, 72px); }
+  90% { transform: translate(-52px, -8px); }
   100% { transform: translate(0, 0); }
 }
 
@@ -149,7 +173,7 @@ h3 {
   min-height: 46px;
   padding: 2px 20px 0;
   border: 1px solid var(--fg);
-  background: transparent;
+  background: var(--bg);
   color: var(--fg);
   font-family: var(--doomer);
   font-size: 1.15rem;
@@ -172,7 +196,7 @@ h3 {
   cursor: default;
 }
 
-/* ---------------------------------------------------------------- hero */
+/* ---------------------------------------------------------------- splash */
 
 .hero {
   position: relative;
@@ -181,7 +205,7 @@ h3 {
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  padding: calc(24px + env(safe-area-inset-top)) var(--gutter) calc(20px + env(safe-area-inset-bottom));
+  padding: calc(22px + env(safe-area-inset-top)) var(--gutter) calc(18px + env(safe-area-inset-bottom));
 }
 
 .hero-bg {
@@ -193,10 +217,10 @@ h3 {
 /* Centered with `translate` so the reveal can own `transform`. */
 .hero-bg img {
   position: absolute;
-  top: 50%;
+  top: 42%;
   left: 50%;
   translate: -50% -50%;
-  width: 170vw;
+  width: 160vw;
   max-width: none;
   height: auto;
   aspect-ratio: 1;
@@ -205,16 +229,16 @@ h3 {
   mask-image: radial-gradient(closest-side, #000 calc(var(--r) - 34%), transparent var(--r));
 }
 
-/* Landscape: the whole grave site, set a little low so the logo sits above the crosses. */
+/* Landscape: the whole grave site, set so the logo sits above the crosses. */
 @media (min-aspect-ratio: 1/1) {
   .hero-bg img {
-    top: 54%;
+    top: 50%;
     width: auto;
-    height: 98svh;
+    height: 96svh;
   }
 }
 
-/* Keeps the logo and the list readable on top of the photo. */
+/* Solid black under the text: contrast, not grey. */
 .hero::after {
   content: "";
   position: absolute;
@@ -222,29 +246,42 @@ h3 {
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(to bottom, rgb(0 0 0 / 0.55), transparent 26%),
-    linear-gradient(to top, rgb(0 0 0 / 0.9), rgb(0 0 0 / 0.72) 30%, transparent 54%);
+    linear-gradient(to bottom, #000, transparent 22%),
+    linear-gradient(to top, #000, #000 34%, rgb(0 0 0 / 0.6) 46%, transparent 62%);
 }
 
 .hero-logo {
   justify-self: center;
-  width: min(82vw, 600px);
+  width: min(74vw, 540px);
+}
+
+/* Landscape has room beside the text, so the photo keeps its dog and the shade stays low. */
+@media (min-aspect-ratio: 1/1) {
+  .hero-logo {
+    width: min(74vw, 540px, 52svh);
+  }
+  .hero-bg img {
+    top: 47%;
+  }
+  .hero::after {
+    background:
+      linear-gradient(to bottom, #000, transparent 18%),
+      linear-gradient(to top, #000, #000 20%, rgb(0 0 0 / 0.6) 32%, transparent 46%);
+  }
 }
 
 .hero-logo img {
   width: 100%;
 }
 
-@media (min-aspect-ratio: 1/1) {
-  .hero-logo {
-    width: min(82vw, 540px, 58svh);
-  }
-}
-
-.news {
+.hero-foot {
   grid-row: 3;
   width: min(100%, 560px);
   margin: 0 auto;
+}
+
+.news {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -253,31 +290,88 @@ h3 {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  column-gap: 16px;
-  padding: 13px 0 12px;
-  border-top: 1px solid var(--rule);
-}
-
-.news-row:last-child {
-  border-bottom: 1px solid var(--rule);
+  column-gap: 12px;
+  padding: 7px 0;
 }
 
 .news-title {
-  font-size: clamp(1.45rem, 6.4vw, 1.9rem);
+  font-size: clamp(1.4rem, 6.2vw, 1.9rem);
   line-height: 1;
 }
 
 .news-meta {
   grid-column: 1;
-  margin-top: 6px;
-  color: var(--muted);
-  font: 700 0.72rem/1.2 var(--sans);
+  margin-top: 5px;
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+.news-cta {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  gap: 6px;
 }
 
 .news .btn {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  min-width: 112px;
+  min-height: 44px;
+  min-width: 92px;
+  padding: 2px 13px 0;
+  font-size: 1.05rem;
+}
+
+/* The gig: one quiet line, not a headline. */
+.gig {
+  margin-top: 12px;
+  font-size: 1rem;
+}
+
+.gig-link {
+  margin-left: 0.3em;
+  border-bottom: 1px solid var(--fg);
+}
+
+.gig-link[href]:hover {
+  border-bottom-color: transparent;
+}
+
+.foot {
+  margin-top: 26px;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: min(1.02rem, 3.7vw);
+  line-height: 1.5;
+}
+
+/* Bullets trail each item, so a wrapped line never starts with one. */
+.links li:not(:last-child)::after {
+  content: "•";
+  margin: 0 0.42em;
+}
+
+.links a[href]:hover {
+  border-bottom: 1px solid var(--fg);
+}
+
+.legal {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 0.66rem;
+  line-height: 1.3;
+}
+
+.tno-mark {
+  flex: none;
+  width: 30px;
 }
 
 /* ---------------------------------------------------------------- reveal */
@@ -287,9 +381,14 @@ h3 {
 }
 
 .js .hero-logo,
+.js .hero-foot > *,
 .js .news-row,
 .js .spine {
   opacity: 0;
+}
+
+.js .hero-foot > .news {
+  opacity: 1;
 }
 
 .ready .hero-bg img {
@@ -300,7 +399,9 @@ h3 {
   animation: flicker 1.9s linear 1.2s both;
 }
 
-.ready .news-row {
+.ready .news-row,
+.ready .gig,
+.ready .foot {
   animation: rise 1.3s var(--ease) both;
   animation-delay: calc(2.3s + var(--i) * 130ms);
 }
@@ -376,7 +477,7 @@ h3 {
   transform: none;
 }
 
-/* ---------------------------------------------------------------- sections */
+/* ---------------------------------------------------------------- scroll on */
 
 .section {
   padding: 22svh var(--gutter) 0;
@@ -390,8 +491,8 @@ h3 {
 
 .kicker {
   margin-bottom: 14px;
-  color: var(--muted);
-  font: 700 0.75rem/1.2 var(--sans);
+  font-size: 0.75rem;
+  line-height: 1.2;
 }
 
 .title {
@@ -402,7 +503,7 @@ h3 {
 
 /* The Thicket: the gatefold, then the chorus as printed inside it. */
 .single {
-  padding-top: 14svh;
+  padding-top: 16svh;
 }
 
 .band {
@@ -414,8 +515,8 @@ h3 {
   aspect-ratio: 4 / 5;
   object-fit: cover;
   object-position: 45% 50%;
-  -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 82%, transparent);
-  mask-image: linear-gradient(transparent, #000 14%, #000 82%, transparent);
+  -webkit-mask-image: linear-gradient(transparent, #000 10%, #000 86%, transparent);
+  mask-image: linear-gradient(transparent, #000 10%, #000 86%, transparent);
 }
 
 @media (min-width: 700px) {
@@ -432,20 +533,6 @@ h3 {
 
 .lyric span {
   display: block;
-}
-
-.where {
-  margin: 18px 0 32px;
-  font-size: clamp(1.2rem, 5vw, 1.6rem);
-}
-
-.where a {
-  border-bottom: 1px solid var(--rule);
-  transition: border-color 0.15s;
-}
-
-.where a:hover {
-  border-color: var(--fg);
 }
 
 /* Eat The Sky: sleeve, then the tracklist set like the back cover. */
@@ -496,38 +583,11 @@ h3 {
   line-height: 1.1;
 }
 
-/* ---------------------------------------------------------------- footer */
-
-.footer {
+/* The back cover credits, column for column. */
+.back {
   padding: 26svh var(--gutter) calc(36px + env(safe-area-inset-bottom));
 }
 
-.links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 0 0 22svh;
-  padding: 0;
-  list-style: none;
-  font-size: clamp(1.25rem, 5vw, 1.7rem);
-  line-height: 1.5;
-}
-
-.links li + li::before {
-  content: "•";
-  margin: 0 0.45em;
-  color: var(--muted);
-}
-
-.links a[href] {
-  transition: opacity 0.15s;
-}
-
-.links a[href]:hover {
-  opacity: 0.6;
-}
-
-/* Back cover credits, column for column. */
 .credits {
   display: grid;
   gap: 20px;
@@ -538,7 +598,8 @@ h3 {
 }
 
 .credits .sans {
-  font: 700 0.78rem/1.6 var(--sans);
+  font-size: 0.78rem;
+  line-height: 1.6;
 }
 
 .tno {
@@ -564,7 +625,8 @@ h3 {
   html {
     scroll-behavior: auto;
   }
-  .grain {
+  .grain,
+  .dust {
     animation: none;
   }
   .js .hero-bg img {
@@ -573,10 +635,13 @@ h3 {
   .ready .hero-bg img,
   .ready .hero-logo,
   .ready .news-row,
+  .ready .gig,
+  .ready .foot,
   .ready .spine {
     animation: none;
   }
   .js .hero-logo,
+  .js .hero-foot > *,
   .js .news-row,
   .js .spine,
   .js .fade,
