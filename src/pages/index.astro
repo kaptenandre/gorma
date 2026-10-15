@@ -1,0 +1,216 @@
+---
+import { Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import Cta from "../components/Cta.astro";
+import { site } from "../site";
+import graves from "../assets/graves.jpg";
+import cover from "../assets/cover.jpg";
+import gatefold from "../assets/gatefold.jpg";
+import logo from "../assets/logo.png";
+
+const { single, live, album } = site;
+
+// Static build: render the state as of build time, the client script keeps it current.
+const now = Date.now();
+const singleOut = now >= Date.parse(single.outAt);
+const albumOut = now >= Date.parse(album.outAt);
+const livePast = now >= Date.parse(live.hideAfter);
+const singleCta = singleOut ? "Listen" : "Pre-save";
+const albumCta = albumOut ? "Buy LP" : "Pre-order";
+---
+
+<Base>
+  <main>
+    <section class="hero" aria-label={site.name}>
+      <div class="hero-bg" aria-hidden="true">
+        <Image
+          src={graves}
+          alt=""
+          widths={[800, 1200, 1600, 2000, 2400]}
+          sizes="(min-aspect-ratio: 1/1) 104vh, 170vw"
+          loading="eager"
+          fetchpriority="high"
+          quality={82}
+          data-hero
+        />
+      </div>
+
+      <h1 class="hero-logo">
+        <Image
+          src={logo}
+          alt={site.name}
+          widths={[500, 800, 1200, 1600]}
+          sizes="(min-width: 900px) 600px, 82vw"
+          loading="eager"
+          data-hero
+        />
+      </h1>
+
+      <ul class="news">
+        <li class="news-row" style="--i: 0">
+          <a class="news-title" href="#the-thicket">{single.title}</a>
+          <span class="news-meta">{single.kind} · {single.dateLabel}</span>
+          <Cta class="btn" href={single.link} data-flip-at={single.outAt} data-after="Listen">{singleCta}</Cta>
+        </li>
+        <li class="news-row" style="--i: 1" data-hide-after={live.hideAfter} hidden={livePast}>
+          <a class="news-title" href="#live">{live.venue}</a>
+          <span class="news-meta">{live.title} in {live.city} · {live.dateLabel}</span>
+          <Cta class="btn" href={live.tickets}>Tickets</Cta>
+        </li>
+        <li class="news-row" style="--i: 2">
+          <a class="news-title" href="#eat-the-sky">{album.title}</a>
+          <span class="news-meta">{album.kind} · {album.format} · {album.dateLabel}</span>
+          <Cta class="btn" href={album.preorder} data-flip-at={album.outAt} data-after="Buy LP">{albumCta}</Cta>
+        </li>
+      </ul>
+    </section>
+
+    <section id="the-thicket" class="section single" aria-labelledby="single-title">
+      <figure class="band">
+        <Image
+          src={gatefold}
+          alt="A dog between two wooden crosses, seen from inside an open grave."
+          widths={[800, 1400, 2000, 2800]}
+          sizes="(max-width: 700px) 250vw, 100vw"
+          quality={80}
+          class="fade"
+        />
+      </figure>
+      <div class="col rise">
+        <p class="kicker">{single.kind} · {single.dateLabel}</p>
+        <h2 id="single-title" class="title">{single.title}</h2>
+        <p class="lyric">
+          {single.lyric.map((line) => <span>{line}</span>)}
+        </p>
+        <Cta class="btn" href={single.link} data-flip-at={single.outAt} data-after="Listen">{singleCta}</Cta>
+      </div>
+    </section>
+
+    <section id="live" class="section live" aria-labelledby="live-title" data-hide-after={live.hideAfter} hidden={livePast}>
+      <div class="col rise">
+        <p class="kicker">{live.title} · {live.dateLabel}</p>
+        <h2 id="live-title" class="title">{live.venue}</h2>
+        <p class="where">
+          <a href={live.map} target="_blank" rel="noopener">{live.address}, {live.city}</a>
+        </p>
+        <Cta class="btn" href={live.tickets}>Tickets</Cta>
+      </div>
+    </section>
+
+    <section id="eat-the-sky" class="section album" aria-labelledby="album-title">
+      <figure class="cover">
+        <Image
+          src={cover}
+          alt={`${album.title} by ${site.name}. Three wooden crosses over open graves in a dark forest, a dog at the edge.`}
+          widths={[600, 900, 1200, 1600]}
+          sizes="(min-width: 700px) 560px, 92vw"
+          quality={82}
+          class="fade"
+        />
+      </figure>
+      <div class="col rise">
+        <p class="kicker">{album.kind} · {album.format} · {album.dateLabelLong}</p>
+        <h2 id="album-title" class="title">{album.title}</h2>
+        <div class="actions">
+          <Cta class="btn" href={album.preorder} data-flip-at={album.outAt} data-after="Buy LP">{albumCta}</Cta>
+          <Cta class="btn" href={album.presave} data-flip-at={album.outAt} data-after="Listen">{albumOut ? "Listen" : "Pre-save"}</Cta>
+        </div>
+      </div>
+      <div class="tracklist rise">
+        {
+          album.sides.map((side) => (
+            <div class="side">
+              <h3>{side.name}</h3>
+              <ol>
+                {side.tracks.map((t) => (
+                  <li>{t}</li>
+                ))}
+              </ol>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <ul class="links rise">
+      {
+        site.links.map((l) => (
+          <li>
+            <Cta href={l.href} rel={l.href ? "me noopener" : undefined}>{l.label}</Cta>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="credits rise">
+      {
+        site.credits.map((col) => (
+          <div>
+            {col.map((line) => (
+              <p>{line}</p>
+            ))}
+          </div>
+        ))
+      }
+      <div>
+        <p class="sans"><a href={site.url}>gormaofficial.com</a> • <a href={site.label.url} target="_blank" rel="noopener">tnor.se</a></p>
+        <p>{site.label.copyright}</p>
+        <p>{site.label.license}</p>
+        <p>{album.catalog}</p>
+      </div>
+      <a class="tno" href={site.label.url} target="_blank" rel="noopener">
+        <img src="/tno.png" width="191" height="315" alt="Trust No One Recordings" loading="lazy" />
+      </a>
+    </div>
+  </footer>
+</Base>
+
+<script>
+  const root = document.documentElement;
+
+  // The reveal waits for the background and logo, so it never starts on a half-loaded image.
+  let started = false;
+  const start = () => {
+    if (started) return;
+    started = true;
+    root.classList.add("ready");
+  };
+  const heroImages = [...document.querySelectorAll<HTMLImageElement>("[data-hero]")];
+  Promise.all(heroImages.map((img) => img.decode().catch(() => {}))).then(start);
+  setTimeout(start, 3500);
+
+  // Images and text fade in as they come into view (images only once they've loaded).
+  const show = (el: Element) => el.classList.add("in");
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const el = entry.target;
+        io.unobserve(el);
+        if (el instanceof HTMLImageElement && !el.complete) {
+          el.addEventListener("load", () => show(el), { once: true });
+          el.addEventListener("error", () => show(el), { once: true });
+        } else {
+          show(el);
+        }
+      }
+    },
+    { rootMargin: "0px 0px -8% 0px" },
+  );
+  document.querySelectorAll(".fade, .rise").forEach((el) => io.observe(el));
+
+  // Dates: "Pre-save" becomes "Listen" at release, the gig disappears once it has been played.
+  const later = (at: number, fn: () => void) => {
+    const wait = at - Date.now();
+    if (wait <= 0) fn();
+    else if (wait < 2 ** 31 - 1) setTimeout(fn, wait + 500);
+  };
+  document.querySelectorAll<HTMLElement>("[data-flip-at]").forEach((el) => {
+    later(Date.parse(el.dataset.flipAt!), () => (el.textContent = el.dataset.after!));
+  });
+  document.querySelectorAll<HTMLElement>("[data-hide-after]").forEach((el) => {
+    later(Date.parse(el.dataset.hideAfter!), () => (el.hidden = true));
+  });
+</script>
