@@ -16,7 +16,7 @@
 :root {
   --fg: #fff;
   --bg: #000;
-  --muted: rgb(255 255 255 / 0.62);
+  --muted: rgb(255 255 255 / 0.74);
   --rule: rgb(255 255 255 / 0.2);
   --doomer: "Doomer", "Old English Text MT", serif;
   /* Helvetica Bold as on the sleeve; system Helvetica on Apple devices. */
@@ -223,7 +223,7 @@ h3 {
   pointer-events: none;
   background:
     linear-gradient(to bottom, rgb(0 0 0 / 0.55), transparent 26%),
-    linear-gradient(to top, rgb(0 0 0 / 0.85), rgb(0 0 0 / 0.5) 26%, transparent 46%);
+    linear-gradient(to top, rgb(0 0 0 / 0.9), rgb(0 0 0 / 0.72) 30%, transparent 54%);
 }
 
 .hero-logo {
