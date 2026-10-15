@@ -387,7 +387,7 @@ h3 {
   transform-origin: 50% 46%;
   animation:
     reveal 3.6s var(--ease) 0.15s both,
-    creep 45s linear both;
+    creep 39s linear both;
 }
 
 .ready .hero-logo {
